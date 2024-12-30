@@ -69,7 +69,11 @@ During testing, the model is evaluated on its ability to predict torques for com
 2. **Torque Prediction**: The model predicts the required torques to transition to the next state.  
 3. **Evaluation**: The accuracy of the model is assessed across 16 different complex trajectories, including both mathematically defined and dynamic systems.  
 
-Unlike the training phase, the testing phase involves pre-defined trajectories, allowing us to evaluate the model’s predictive capabilities on unseen data.  
+Unlike the training phase, the testing phase involves pre-defined trajectories, allowing us to evaluate the model’s predictive capabilities on unseen data.
+
+![image](https://github.com/user-attachments/assets/58fbbc6b-0b49-42e4-8f6c-81e5a9555065)
+
+![image](https://github.com/user-attachments/assets/c4943c30-ead0-4c08-9c98-5e37dc89c51a)
 
 ## Conclusion  
 
