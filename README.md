@@ -7,36 +7,28 @@ The modeling and control of complex dynamical systems pose significant challenge
 
 ### Mathematically Defined Trajectories  
 Data for mathematically defined trajectories is generated using predefined equations like circular, elliptical, or figure-eight paths. For each trajectory:  
-1. **Define the governing mathematical equation** (e.g., a circle: \( x = r \cos(\theta), y = r \sin(\theta) \)).  
-2. Sample the time variable \( t \) at fixed intervals to compute corresponding \( x \) and \( y \) positions.  
-3. The resulting positions are normalized to ensure consistency in scaling.  
+1. **Define the governing mathematical equation**
 
-Example: Generating five points for a circular trajectory with radius \( r = 1 \):  
-- At \( \theta = 0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}, 2\pi \), we get:  
-  \[
-  (1, 0), (0, 1), (-1, 0), (0, -1), (1, 0)
-  \]  
+Eg- A circular reference trajectory is periodic, which can be described as
 
-Velocity values (\( \dot{x}, \dot{y} \)) are computed as derivatives of position with respect to time, providing additional features for training.  
+![image](https://github.com/user-attachments/assets/fa8baa05-ba70-46ae-a090-e66d59941a5a)
+ 
+![image](https://github.com/user-attachments/assets/6b79dc7d-a192-4008-990b-efb3f0e2ffeb)
 
-### Dynamic Trajectories  
-Dynamic trajectories, such as those derived from Lorenz or Mackey-Glass systems, are simulated from differential equations. For example, the **Lorenz System** is governed by:  
-\[
-\frac{dx}{dt} = \sigma (y - x), \quad \frac{dy}{dt} = x(\rho - z) - y, \quad \frac{dz}{dt} = xy - \beta z
-\]  
-1. **Simulate the system** using chosen parameter values (e.g., \( \sigma = 10, \rho = 28, \beta = 8/3 \)).  
-2. Normalize the state vectors to a consistent range.  
-3. Interpolate the resulting trajectory to achieve a meaningful resolution.  
+### Dynamic Trajectories
 
-Example: Five points for the Lorenz trajectory simulated over \( t = 0.01 \) seconds:  
-- High-dimensional vectors such as \( (x, y, z) \) are normalized and interpolated to produce meaningful time steps.  
+ The classic Lorenz chaotic system, a simplified model for atmospheric convection, is
+
+ ![image](https://github.com/user-attachments/assets/c46c8b6f-890c-40fd-8c0d-dfc389a1409f)
+
+![image](https://github.com/user-attachments/assets/7e5c5284-c26d-4b6f-bba3-5f27991c0c94)
+
+![image](https://github.com/user-attachments/assets/bc8fc082-a9d0-4c16-bac1-17cecbc13c30)
 
 ### Partial State Vector
 For both mathematically defined and dynamic trajectories, we utilize a four-dimensional partial state vector:
 
-$$[C_x, C_y, \dot{q}_1, \dot{q}_2]^T$$
-
-This partial representation is computationally efficient and reduces the data requirement, making RC particularly suited for such tasks. By focusing on partial states, the complexity of training is reduced without sacrificing predictive accuracy, which is a key advantage of our approach.
+![image](https://github.com/user-attachments/assets/078dc431-387c-4988-92a0-2d32eb97aec5)
 
 
 ## Reservoir Computing  
@@ -50,18 +42,27 @@ Reservoir Computing is a neural network framework specifically designed for hand
 - The lightweight training process, which only updates the output layer, aligns with the need for efficient learning in high-dimensional systems.  
 - The partial state vector as input aligns with RC’s ability to work with sparse representations.  
 
-## Training Phase  
+## Training Phase 
+
+![image](https://github.com/user-attachments/assets/835b6ddf-2d2e-46f5-a1da-af36d2c62cc8)
+
+![image](https://github.com/user-attachments/assets/15eafd42-043f-4a0b-93cc-2ad7b38028b3)
 
 The training phase begins with applying **random torques** to the system. The process can be described step-by-step:  
 1. **Initial State**: Start at a randomly chosen point in the state space.  
-2. **Apply Random Torques**: For each time step \( t \), apply a randomly generated torque.  
-3. **State Transition**: Use the applied torque to transition from state \( t \) to \( t+\Delta t \).  
-4. **Record Data**: Combine the state vectors for \( t \) and \( t+\Delta t \) to create a training example.  
+2. **Apply Random Torques**: For each time step t, apply a randomly generated torque. 
+3. **State Transition**: Use the applied torque to transition from state t to t+ Delta t.  
+4. **Record Data**: Combine the state vectors for t and t+Delta t to create a training example.
 5. **Loss Function**: The RC model predicts the applied torques, and the loss function minimizes the difference between actual and predicted torques.  
 
-This iterative process generates a random walk-like trajectory, which constitutes a single episode (\( T_{ep} \)). Multiple episodes are used to train the model to generalize across different trajectories.  
+This iterative process generates a random walk-like trajectory, which constitutes a single episode T_ep. Multiple episodes are used to train the model to generalize across different trajectories.
+
+![image](https://github.com/user-attachments/assets/fe9edc5a-53e4-436f-83a2-e985dc076a3b)
+
 
 ## Testing Phase  
+
+![image](https://github.com/user-attachments/assets/f86d7481-e58a-4202-a351-76ee3853b466)
 
 During testing, the model is evaluated on its ability to predict torques for complex, pre-defined trajectories. The process includes:  
 1. **Input Data**: Provide the model with known state vectors from the trajectory.  
